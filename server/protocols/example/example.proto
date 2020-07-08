@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option go_package = ".;example";
+
+service ExampleService {
+  rpc createWidget (CreateWidgetRequest) returns (CreateWidgetReply) {}
+  rpc getWidget(GetWidgetRequest) returns (GetWidgetReply) {}
+}
+
+message CreateWidgetRequest {
+
+  // @validate: required
+  string name = 1;
+
+  // @validate: required,gte=21,lte=121
+  int32 age = 2;
+
+  // @validate: required,email
+  string email = 3;
+
+  // @validate: required,e164
+  string phone_number = 4;
+
+  // @validate: dive,required
+  repeated string attributes = 5;
+
+}
+
+message CreateWidgetReply {
+  string id = 1;
+}
+
+message GetWidgetRequest {
+
+  // @validate: required,uuid4
+  string id = 1;
+
+}
+
+message GetWidgetReply {
+  string id = 1;
+  string name = 2;
+  string age = 3;
+  string email = 4;
+  repeated string attributes = 5;
+}
