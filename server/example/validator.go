@@ -1,24 +1,11 @@
 package example
 
 import (
-	va "github.com/go-playground/validator/v10"
 	p "github.com/journeyai/grpc-validation/protocols/example"
 	"github.com/journeyai/grpc-validation/server/util"
 )
 
-// Validator validates requests
-type Validator struct {
-	validate va.Validate
-}
-
-func newValidator() Validator {
-	return Validator{
-		validate: *va.New(),
-	}
-}
-
-// ValidateCreateWidget validates CreateWidget requests
-func (v Validator) ValidateCreateWidget(in p.CreateWidgetRequest) error {
+func validateCreateWidget(in p.CreateWidgetRequest) error {
 
 	explanations := util.Explanations{
 		"Name": util.Explanation{
@@ -37,17 +24,10 @@ func (v Validator) ValidateCreateWidget(in p.CreateWidgetRequest) error {
 		},
 	}
 
-	errs := v.validate.Struct(in)
-	if errs == nil {
-		return nil
-	}
-
-	errors := errs.(va.ValidationErrors)
-	return util.HandleErrorResponse(errors, explanations)
+	return util.ValidateRequest(in, explanations)
 }
 
-// ValidateGetWidget validates GetWidget requests
-func (v Validator) ValidateGetWidget(in p.GetWidgetRequest) error {
+func validateGetWidget(in p.GetWidgetRequest) error {
 
 	explanations := util.Explanations{
 		"Id": util.Explanation{
@@ -56,11 +36,5 @@ func (v Validator) ValidateGetWidget(in p.GetWidgetRequest) error {
 		},
 	}
 
-	errs := v.validate.Struct(in)
-	if errs == nil {
-		return nil
-	}
-
-	errors := errs.(va.ValidationErrors)
-	return util.HandleErrorResponse(errors, explanations)
+	return util.ValidateRequest(in, explanations)
 }

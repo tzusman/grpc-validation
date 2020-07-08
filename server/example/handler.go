@@ -10,25 +10,20 @@ import (
 
 // Server handles the Example protocol
 type Server struct {
-	validator Validator
-	store     util.UserStore
+	store util.UserStore
 }
 
 // NewServer creates a new server
 func NewServer() (*Server, error) {
-
-	s := Server{
-		validator: newValidator(),
-		store:     util.NewUserStore(),
-	}
-
-	return &s, nil
+	return &Server{
+		store: util.NewUserStore(),
+	}, nil
 }
 
 // CreateWidget handles the CreateWidget request
 func (s Server) CreateWidget(ctx context.Context, in *p.CreateWidgetRequest) (*p.CreateWidgetReply, error) {
 
-	err := s.validator.ValidateCreateWidget(*in)
+	err := validateCreateWidget(*in)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +47,7 @@ func (s Server) CreateWidget(ctx context.Context, in *p.CreateWidgetRequest) (*p
 // GetWidget handles the GetWidget request
 func (s Server) GetWidget(ctx context.Context, in *p.GetWidgetRequest) (*p.GetWidgetReply, error) {
 
-	err := s.validator.ValidateGetWidget(*in)
+	err := validateGetWidget(*in)
 	if err != nil {
 		return nil, err
 	}
