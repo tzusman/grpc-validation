@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/journeyai/grpc-validation/server/protocols/example"
+	p "github.com/journeyai/grpc-validation/protocols/example"
+	"github.com/journeyai/grpc-validation/server/example"
 	"google.golang.org/grpc"
 )
 
@@ -17,7 +18,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	example.RegisterExampleServiceServer(grpcServer, *exampleServer)
+	p.RegisterExampleServiceServer(grpcServer, *exampleServer)
 
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
